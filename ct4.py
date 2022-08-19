@@ -10,8 +10,8 @@ INPUT_FILE = "./raw_t1_subject_02.nii.gz"
 
 image = nib.load(INPUT_FILE).get_fdata()
 final_image = np.full((256,256,256),0, dtype = float)
-
-for z in [84,128]:
+print("This script will take a long time to finish(3.1 Hrs on Macbook Pro M1)")
+for z in range(256):
     sst = time.time()
     im00 = image[:,z,:]
 
@@ -77,9 +77,8 @@ for z in [84,128]:
                             dis = sqrt((i2 - i1)**2 + (j2-j1)**2)
                             if dis < min_dis:
                                 min_dis = dis
-                                # px = i2
-                                # py = j2
-                im15[i1][j1] = min_dis #if min_dis < 5.1 else 0
+                                
+                im15[i1][j1] = min_dis 
                 # if min_dis > 5:
                 #     im15[px][py] += 1
                 # im15[px][py] = 1
@@ -104,7 +103,6 @@ for z in [84,128]:
                             if dis < min_dis:
                                 min_dis = dis
                                 val = y
-                # im16[i1][j1] = val if val <= 5 else 0
                 final_image[i1][z][j1] = val if val <= 5 else 0 #Ignoring the error values
 
     # plt.figure().suptitle("Final")
@@ -130,4 +128,5 @@ print('Execution time:', time.strftime("%H:%M:%S", time.gmtime(et)))
 # plt.draw()
 # plt.show()
 final_image = nib.Nifti1Image(final_image, None)
-nib.save(final_image, "./final_thickness_map_fast.nii.gz")
+file_name = "./final_thickness_map_new.nii.gz"
+nib.save(final_image, file_name)
